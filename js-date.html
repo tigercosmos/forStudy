@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script language="javascript">
+window.onload=function(){setInterval(function(){nowTime();},1000);};// why setInterval裡面要有function?
+function nowTime(){
+	var n=new Date();
+	var content=document.getElementById("y");
+	content.innerHTML=n.getYear()+1900;
+	content=document.getElementById("m");
+	content.innerHTML=n.getMonth()+1;
+	content=document.getElementById("d");
+	content.innerHTML=n.getDate();
+	content=document.getElementById("h");
+	content.innerHTML=n.getHours();
+	content=document.getElementById("min");
+	content.innerHTML=n.getMinutes();
+	content=document.getElementById("s");
+	content.innerHTML=n.getSeconds();
+}
+
+</script>
+</head>
+
+<body>
+<table border=1>
+<tr><td>年<td>月<td>日<td>時<td>分<td>秒
+<tr><td id="y"><td id="m"><td id="d"><td id="h"><td id="min"><td id="s">
+</table>
+</body>
+</html>
