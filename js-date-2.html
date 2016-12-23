@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- No need to add language="javascript" -->
+<script>
+
+// SYNTAX: setInterval(function, time); 
+//e.g. setInterval( run, 1000); where run is  "fumction run(){}"
+//not good: window.onload=function(){setInterval(function(){nowTime();},1000);};
+
+// Coding Style
+window.onload = function(){
+	//better syntax
+	setInterval(nowTime,1000);
+};
+
+function nowTime(){
+	// var n=new Date();
+	// Use "let", we don't use var nowaday
+	// 'let' for variable; 'const' for constant
+	let n = new Date();
+	// better to add space next to equal sign
+
+	// var content=document.getElementById("y");
+	// content.innerHTML=n.getYear()+1900;
+	// More Clear!
+	document.getElementById("y").innerHTML = n.getYear()+1900;
+
+	let content=document.getElementById("m");
+	content.innerHTML=n.getMonth()+1;
+	content=document.getElementById("d");
+	content.innerHTML=n.getDate();
+	content=document.getElementById("h");
+	content.innerHTML=n.getHours();
+	content=document.getElementById("min");
+	content.innerHTML=n.getMinutes();
+	content=document.getElementById("s");
+	content.innerHTML=n.getSeconds();
+}
+
+</script>
+</head>
+
+<body>
+<table border=1>
+<!--<tr><td>�~<td>��<td>��<td>��<td>��<td>��-->
+<!-- You should use UTF-8(編碼問題) -->
+<!-- Also You forget to add '</tr>' and '</td>'  -->
+<tr><td>年~</td><td>月</td><td>日</td><td>時</td><td>分</td><td>秒</td></tr>
+<tr><td id="y"></td><td id="m"></td><td id="d"></td><td id="h"></td><td id="min"></td><td id="s"></td></tr>
+</table>
+</body>
+</html>
