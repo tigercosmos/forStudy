@@ -1,0 +1,58 @@
+<html>
+<head>
+<script language="javascript">
+function construct(){  //建構類別,成員有 x y vx vy t 和一個函式throwball
+	this.t=0;
+	this.x=0;
+	this.y=0;
+	this.vx=0;
+	this.vy=0;
+	this.throwball=function() {  //用來計算下一秒鐘的位置
+						this.t++;
+						this.x=this.t*this.vx;
+						this.y=Math.round((this.vy*this.t - (1/2)*9.8*this.t*this.t)*100)/100 ;
+						if(this.y<0)
+							this.y=0;
+					}
+}
+
+function setv(form){  //當按下表單按鈕後要做的事
+	let obj=new construct();  //建構一個物件obj
+	obj.vx=form.vx.value;	  //用輸入的值初始化他的vx vy , 可以直接在建構子裡做嗎我試過他跑不出來QQ 
+	obj.vy=form.vy.value;
+	let writet=document.getElementById("t").innerHTML="<td>時間(s) </td>"; //初始化表格,刪掉上一次留下的記錄
+	let writex=document.getElementById("x").innerHTML="<td> x軸(m) </td>";
+	let writey=document.getElementById("y").innerHTML="<td> y軸(m) </td>";
+	let si=setInterval(  //每一秒移動並輸出obj的位置
+		function(){ 	//輸出位置
+		writet=document.getElementById("t").innerHTML+="<td>"+obj.t+"</td>";
+		writex=document.getElementById("x").innerHTML+="<td>"+obj.x+"</td>";
+		writey=document.getElementById("y").innerHTML+="<td>"+obj.y+"</td>";
+		if(obj.y==0 && obj.t!= 0)  //如果落地了就停止
+			clearInterval(si);
+		obj.throwball();	//移動obj
+		},1000)
+}
+</script>
+</head>
+
+
+<body>
+<form>
+輸入x軸速度 :
+<input type="text" name="vx"> <br>
+輸入y軸速度(g=9.8至少輸入10吧XD):
+<input type="text" name="vy"> <br>
+<input type="button" 
+value="點我點我點我點我點我!!!!!" onClick="setv(this.form)">
+</form>
+
+
+<table border=1>
+<tr id="t"> <td>時間(s) </td> </tr>
+<tr id="x"> <td> x軸(m) </td> </tr>
+<tr id="y"> <td> y軸(m) </td> </tr>
+</table>
+
+</body>
+</html>
