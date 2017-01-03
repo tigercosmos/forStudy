@@ -55,19 +55,24 @@
         <input type="button" value="Calc" class="button" onClick="run(this.form)">
     </form>
 
-    <table id='result'>
-        <!-- the following refreshs in render()-->
+    <!-- refresh in render()-->
+    <table id='result'></table>
+
+    <script>
+
+    // result table
+    let result = document.getElementById('result');
+
+    // initial function
+    function run(form){
+
+        // reset table when calling run()
+        result.innerHTML = `
         <tr>
             <th>Time</th>
             <th>X</th>
             <th>Y</th>
-        </tr>
-    </table>
-
-    <script>
-
-    // initial function
-    function run(form){
+        </tr>`;
 
         let ball = new Ball(0, 0, form.vx.value, form.vy.value); // init the Ball
 
@@ -79,14 +84,14 @@
     }
 
     // for refresh table
-    let result = document.getElementById('result');
     function render(b){
-        result.innerHTML += "<tr><td>" + b.t.toFixed(2) + 
-                            "</td><td>" + b.x.toFixed(3) + 
-                            "</td><td>" + b.y.toFixed(3) + 
-                            "</tr>";
+        result.innerHTML += `
+        <tr>
+            <td>${b.t.toFixed(2)}</td>
+            <td>${b.x.toFixed(3)}</td>
+            <td>${b.y.toFixed(3)}</td>
+        </tr>`;
     }
-
 
     // object
     class Ball {
@@ -109,7 +114,6 @@
             this.t += this.dt;
         }
     }
-
     </script>
 </body>
 </html>
