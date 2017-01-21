@@ -1,98 +1,101 @@
 <html>
+
 <head>
 	<title> ~~~ </title>
-	<style>                
-	th {
-		background-color: blue;
-		color:white;
-	}
-	td,th{
-		text-align:center;
-		text-margin:4px;
-		width:30%;
-	}
-	table{
-		width:30%;
-		overflow:forbidden;
-	}
+	<style>
+		th {
+			background-color: blue;
+			color: white;
+		}
+		
+		td,
+		th {
+			text-align: center;
+			text-margin: 4px;
+			width: 30%;
+		}
+		
+		table {
+			width: 30%;
+			overflow: forbidden;
+		}
 	</style>
 </head>
 
-<body scrolling="no";>
-	<table id="table" border=0>  </table>  
-	
-	<script>   
-		let table=document.getElementById("table");  
-		table.innerHTML=`    //initiallize the table
+<body scrolling="no" ;>
+	<table id="table" border=0> </table>
+	<script>
+		let table = document.getElementById("table");
+		//initiallize the table
+		table.innerHTML = ` 
 			<tr>
 				<th> turn </th> <th> winner </th>
 			</tr> 	`;
-		class people{        //build class people
-			constructor(){
-				this.total=0; //how many games are finished
-				this.wt=0; //wintime=0
-				this.now=0; //gesture in this game
+		class people { //build class people
+			constructor() {
+				this.total = 0; //how many games are finished
+				this.wt = 0; //wintime=0
+				this.now = 0; //gesture in this game
 			}
 		}
-		
-		let A=new people();
-		let B=new people();
-		for(let i=0;i<100;i++){	//100 games	
-			game(A,B);
-		} 
+
+		let A = new people();
+		let B = new people();
+		for (let i = 0; i < 100; i++) { //100 games	
+			game(A, B);
+		}
 		document.write(`<br>A win ${A.wt} times  
 						<br>B win ${B.wt} times
-						<br>tie ${100-A.wt-B.wt} times`);//write the result
-		function game(A,B){
-				A.total++;  //use A.total to calculate how many games are finished
-				A.now=Math.floor(Math.random()*3); //random gesture 0=scissor 1=stone 2=paper
-				B.now=Math.floor(Math.random()*3);
-				if(A.now==B.now){  //tie
-					table.innerHTML+=`
+						<br>tie ${100-A.wt-B.wt} times`); //write the result
+		function game(A, B) {
+			A.total++; //use A.total to calculate how many games are finished
+			A.now = Math.floor(Math.random() * 3); //random gesture 0=scissor 1=stone 2=paper
+			B.now = Math.floor(Math.random() * 3);
+			if (A.now == B.now) { //tie
+				table.innerHTML += `
 						<tr> 
 							<td>${A.total}</td> <td> tie </td>
 					    </tr> `;
-				}else if(A.now==0 && B.now==1){  //A scissor B stone
-					table.innerHTML+=`
+			} else if (A.now == 0 && B.now == 1) { //A scissor B stone
+				table.innerHTML += `
 						<tr> 
 							<td>${A.total}</td> <td> B </td>
 					    </tr>`;
-					B.wt++;
-				}else if(A.now==0 && B.now==2){  //A scissor B paper
-					table.innerHTML+=`
+				B.wt++;
+			} else if (A.now == 0 && B.now == 2) { //A scissor B paper
+				table.innerHTML += `
 						<tr> 
 							<td>${A.total}</td> <td> A </td>
 					    </tr>`;
-					A.wt++;
-				}else if(A.now==1 && B.now==2){  //A stone B paper
-					table.innerHTML+=`
+				A.wt++;
+			} else if (A.now == 1 && B.now == 2) { //A stone B paper
+				table.innerHTML += `
 						<tr> 
 							<td>${A.total}</td> <td> B </td>
 					    </tr>`;
-					B.wt++;
-				}else if(A.now==1 && B.now==0){  //A stone B scissor
-					table.innerHTML+=`
+				B.wt++;
+			} else if (A.now == 1 && B.now == 0) { //A stone B scissor
+				table.innerHTML += `
 						<tr> 
 							<td>${A.total}</td> <td> A </td>
 					    </tr>`;
-					A.wt++;
-				}else if(A.now==2 && B.now==0){  //A paper B scissor
-					table.innerHTML+=`
+				A.wt++;
+			} else if (A.now == 2 && B.now == 0) { //A paper B scissor
+				table.innerHTML += `
 						<tr> 
 							<td>${A.total}</td> <td> B </td>
 					    </tr>`;
-					B.wt++;
-				
-				}else if(A.now==2 && B.now==1){  //A paper B stone
-					table.innerHTML+=`
-						<tr> 
-							<td>${A.total}</td> <td> A </td>
-					    </tr>`;
-					A.wt++;
-				}
-			} 
-	</script>
+				B.wt++;
 
+			} else if (A.now == 2 && B.now == 1) { //A paper B stone
+				table.innerHTML += `
+						<tr> 
+							<td>${A.total}</td> <td> A </td>
+					    </tr>`;
+				A.wt++;
+			}
+		}
+	</script>
 </body>
 
 </html>
