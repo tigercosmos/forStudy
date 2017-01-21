@@ -1,0 +1,136 @@
+<html>
+
+<head>
+	<title> 剪刀石頭布 </title>
+	<style>
+		* {
+			font-size: large;
+			font-family: 微軟正黑體
+		}
+		
+		th {
+			background-color: blue;
+			color: white;
+		}
+		
+		td,
+		th {
+			text-align: center;
+			width: 30%;
+		}
+		
+		table {
+			padding: 10px;
+			width: 30%;
+			overflow: forbidden;
+		}
+		
+		button {
+			background-color: #008CBA;
+			border: none;
+			color: white;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			padding: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<button onclick="main()">Click to Run</button>
+	<div id="table" border=0> </div>
+	<script>
+
+		function main() {
+			let A = new people('Tiger');
+			let B = new people('Jenny');
+			let game = new Game();
+			for (let i = 0; i < 1000; i++) {
+				game.play(A, B);
+			}
+			render(game.scoreBoard, game.scoreTotal);
+		}
+
+		function render(score, total) {
+			
+			let content = ``;
+
+			for (let k in total) {
+				content += `${k} : ${total[k]} <br>`;
+			}
+
+			content += `
+				<table>	
+					<tr>
+						<th> turn </th> <th> winner </th>
+					</tr> `;
+
+			for (let i in score) {
+				content += `
+					<tr> 
+						<td>${i}</td> <td> ${score[i]} </td>
+					</tr>`;
+			}
+
+			content += '</table>';
+
+			document.getElementById("table").innerHTML = content;
+		}
+
+		class people {
+			constructor(name) {
+				this.name = name;
+			}
+			mora() {
+				return ['Paper', 'Scissors', 'Stone'][Math.floor(Math.random() * 3)];
+			}
+		}
+
+		class Game {
+			constructor() {
+				this.scoreBoard = [];
+				this.scoreTotal = {};
+			}
+
+			score(winner) {
+
+				if (this.scoreTotal[winner] !== undefined) {
+					this.scoreTotal[winner] += 1;
+				} else {
+					this.scoreTotal[winner] = 1;
+				}
+
+				this.scoreBoard.push(winner);
+			}
+
+			play(A, B) {
+
+				let P1 = A.name;
+				let P2 = B.name;
+
+				let result = {
+					'Paper+Scissors': P2,
+					'Paper+Stone': P1,
+					'Stone+Paper': P2,
+					'Stone+Scissors': P1,
+					'Scissors+Paper': P1,
+					'Scissors+Stone': P2,
+					'Paper+Paper': 'Tie',
+					'Scissors+Scissors': 'Tie',
+					'Stone+Stone': 'Tie'
+				}
+
+				let aRound = `${A.mora()}+${B.mora()}`;
+				let winner = result[aRound];
+				this.score(winner);
+			}
+		}
+	</script>
+</body>
+
+</html>
