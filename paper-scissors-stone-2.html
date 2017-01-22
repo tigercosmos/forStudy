@@ -45,7 +45,9 @@
 	<button onclick="main()">Click to Run</button>
 	<div id="table" border=0> </div>
 	<script>
-
+		/*
+		 * @description: main script 
+		 */
 		function main() {
 			let A = new people('Tiger');
 			let B = new people('Jenny');
@@ -56,10 +58,14 @@
 			render(game.scoreBoard, game.scoreTotal);
 		}
 
+		/*
+		 * @description: refresh the table 
+		 */
 		function render(score, total) {
-			
+
 			let content = ``;
 
+			// show result of win times total 
 			for (let k in total) {
 				content += `${k} : ${total[k]} <br>`;
 			}
@@ -82,29 +88,38 @@
 			document.getElementById("table").innerHTML = content;
 		}
 
+		/*
+		 * @description: the people object class 
+		 */
 		class people {
 			constructor(name) {
 				this.name = name;
 			}
+			// choose one to mora
 			mora() {
 				return ['Paper', 'Scissors', 'Stone'][Math.floor(Math.random() * 3)];
 			}
 		}
 
+		/*
+		 * @description: define a game object class
+		 */
 		class Game {
 			constructor() {
+				// record each game result 
 				this.scoreBoard = [];
+				// record the each one total win times
 				this.scoreTotal = {};
 			}
 
 			score(winner) {
-
+				// update total
 				if (this.scoreTotal[winner] !== undefined) {
 					this.scoreTotal[winner] += 1;
 				} else {
 					this.scoreTotal[winner] = 1;
 				}
-
+				// update each game result list 
 				this.scoreBoard.push(winner);
 			}
 
@@ -112,7 +127,7 @@
 
 				let P1 = A.name;
 				let P2 = B.name;
-
+				// define each case of mora
 				let result = {
 					'Paper+Scissors': P2,
 					'Paper+Stone': P1,
@@ -124,7 +139,7 @@
 					'Scissors+Scissors': 'Tie',
 					'Stone+Stone': 'Tie'
 				}
-
+				// play a round and score result
 				let aRound = `${A.mora()}+${B.mora()}`;
 				let winner = result[aRound];
 				this.score(winner);
