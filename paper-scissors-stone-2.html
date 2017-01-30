@@ -48,7 +48,7 @@
 		/*
 		 * @description: main script 
 		 */
-		function main() {
+		function main() {      //main...?
 			let A = new people('Tiger');
 			let B = new people('Jenny');
 			let game = new Game();
@@ -66,8 +66,8 @@
 			let content = ``;
 
 			// show result of win times total 
-			for (let k in total) {
-				content += `${k} : ${total[k]} <br>`;
+			for (let k in total) {  									
+				content += `${k} : ${total[k]} <br>`;                  //?
 			}
 
 			content += `
@@ -97,7 +97,7 @@
 			}
 			// choose one to mora
 			mora() {
-				return ['Paper', 'Scissors', 'Stone'][Math.floor(Math.random() * 3)];
+				return ['Paper', 'Scissors', 'Stone'][Math.floor(Math.random() * 3)];  				//?
 			}
 		}
 
@@ -129,7 +129,7 @@
 				let P2 = B.name;
 				// define each case of mora
 				let result = {
-					'Paper+Scissors': P2,
+					'Paper+Scissors': P2,       //?
 					'Paper+Stone': P1,
 					'Stone+Paper': P2,
 					'Stone+Scissors': P1,
@@ -140,7 +140,7 @@
 					'Stone+Stone': 'Tie'
 				}
 				// play a round and score result
-				let aRound = `${A.mora()}+${B.mora()}`;
+				let aRound = `${A.mora()}+${B.mora()}`;           //?
 				let winner = result[aRound];
 				this.score(winner);
 			}
