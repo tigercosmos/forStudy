@@ -1,0 +1,243 @@
+<html>
+
+<head>
+    <title> Mora on Map </title>
+    <style>
+        * {
+            font-size: large;
+            font-family: 微軟正黑體
+        }
+
+        button {
+            background-color: #008CBA;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="main()">Click to Run</button>
+    <div id="result"> </div>
+    <script>
+
+        function main() {
+            let map = new Map();
+            let result = map.runRounds();
+            showResult(result);
+        }
+
+        /*
+         * @description: show result as HTML
+         * @param: result is array include each round [winTimes, moveTimes]
+         */
+        function showResult(result) {
+            let avgWin = 0,
+                avgMove = 0;
+            result.forEach((res) => {
+                avgWin += res[0];
+                avgMove += res[1];
+            });
+            avgWin /= result.length;
+            avgMove /= result.length;
+            document.getElementById("result").innerHTML = (
+                `<h2>Average Wins ${avgWin} Particles</h2>
+                <h2>Average Move ${avgMove} Times</h2>`
+            );
+        }
+
+
+        // make random number from 0 to k
+        function randN(k) {
+            return Math.floor(Math.random() * k);
+        }
+
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.winParticles = 0;
+                this.moveTimes = 0;
+            }
+            // choose one to mora
+            mora() {
+                return ['Paper', 'Scissors', 'Stone'][randN(3)];
+            }
+            // directions is from Map.getNeighbours, including all directions it can move
+            move(directions) {
+                let next = directions[randN(directions.length)];
+                this.x += next[0];
+                this.y += next[1];
+            }
+            // return string like (3,7) for usage as a key of object
+            position() {
+                return `(${this.x},${this.y})`;
+            }
+        }
+
+
+        class Map {
+            constructor() {
+                // total rounds
+                this.numRounds = 100;
+                // how many Particles
+                this.particlesSize = 20;
+                // the Map side length
+                this.sideLength = 10;
+                // record {position: [particles]}, e.g {"(2,4)": [pt1, pt2]} 
+                this.field = {};
+                // record all Particles on the Map
+                this.particles = [];
+                // Enable Neighbour Direction
+                this.Neighbour = {
+                    CLT: [[ 1, 0], [ 0, 1], [ 1, 1]],
+                    CT:  [[-1, 0], [ 1, 0], [-1, 1], [ 0, 1], [ 1, 1]],
+                    CRT: [[-1, 0], [-1, 1], [ 0, 1]],
+                    CL:  [[ 0,-1], [ 1,-1], [ 1, 0], [ 0, 1], [ 1, 1]],
+                    CR:  [[-1,-1], [ 0,-1], [-1, 0], [-1, 1], [ 0, 1]],
+                    CLB: [[ 0,-1], [ 1,-1], [ 1, 0]],
+                    CB:  [[-1,-1], [ 0,-1], [ 1,-1], [-1, 0], [ 1, 0]],
+                    CRB: [[-1,-1], [ 0,-1], [-1, 0]],
+                    C:   [[-1,-1], [ 0,-1], [ 1,-1], [-1, 0], [ 1, 0], [-1, 1], [ 0, 1], [ 1, 1]]
+                };
+            }
+
+            //  play n rounds
+            runRounds() {
+                let result = [];
+                while (result.length < this.numRounds) {
+                    result.push(this.aRound());
+                }
+                return result;
+            }
+
+            //  each round of game
+            aRound() {
+                this.initialize();
+                this.intoField();
+                this.fight();
+                while (this.particles.length > 1) {
+                    this.move();
+                    this.intoField();
+                    this.fight();
+                }
+                return [this.particles[0].winParticles, this.particles[0].moveTimes];
+            }
+
+            // make Particles and store in Map.particles
+            initialize() {
+                this.particles = [];
+                while (this.particles.length < this.particlesSize) {
+                    this.particles.push(new Particle(randN(this.sideLength), randN(this.sideLength)));
+                }
+            }
+
+            //  Map.move 
+            move() {
+                this.particles.forEach((pt) => {
+                    // Particle.move
+                    pt.move(this.getNeighbours(pt));
+                    pt.moveTimes += 1;
+                });
+            }
+
+            // record each position's particles
+            intoField() {
+                this.field = {};
+                this.particles.forEach((pt) => {
+                    let pos = pt.position();
+                    //  the position has had particles already
+                    if (pos in this.field) {
+                        this.field[pos].push(pt);
+                    } else { //  the position is blank 
+                        this.field[pos] = [pt];
+                    }
+                });
+            }
+
+            fight() {
+                // set the list blank, put winner back later
+                this.particles = [];
+                // run all position
+                for (let pts in this.field) {
+                    pts = this.field[pts];
+                    let ptsLen = pts.length;
+                    //  if only one in this position, the one stay
+                    if (ptsLen == 1) {
+                        this.particles.push(pts[0]);
+                    } else { //  if the position has many pts, then fight
+                        pts = this.winMora(pts);
+                        pts.forEach((pt) => {
+                            // win how many people =  previous - now
+                            pt.winParticles += (ptsLen - pts.length);
+                            // put pts which win back to the list 
+                            this.particles.push(pt);
+                        });
+                    }
+                }
+            };
+
+            // return winners
+            winMora(pts) {
+                // container to put each particle's mora result
+                let three = {
+                    Paper: [],
+                    Scissors: [],
+                    Stone: []
+                };
+                // pt mora, and put into the container
+                pts.forEach((pt) => {
+                    three[pt.mora()].push(pt);
+                });
+
+                // how many kinds of mora
+                let res = 0;
+                // which kinds of mora is empty 
+                let empty = '';
+
+                // find res and empty
+                for (let i in three) {
+                    if (three[i].length != 0)
+                        res++;
+                    else
+                        empty = i;
+                }
+
+                // know which category is empty, then know which category wins
+                if (res == 2) {
+                    switch (empty) {
+                        case 'Paper':
+                            return three.Stone;
+                        case 'Scissors':
+                            return three.Paper;
+                        case 'Stone':
+                            return three.Scissors;
+                    }
+                } else {
+                    //  tie
+                    return pts;
+                }
+            };
+
+            getNeighbours(pt) {
+                let nei = "C";
+                if (pt.x == 0) nei += "L";
+                if (pt.x == this.sideLength - 1) nei += "R";
+                if (pt.y == 0) nei += "T";
+                if (pt.y == this.sideLength - 1) nei += "B";
+                return this.Neighbour[nei];
+            };
+        }
+    </script>
+</body>
+
+</html>
