@@ -6,22 +6,17 @@
 <body>
 ~
 <script>
-
-// maybe go() or game() has problem   (because the program can run properly without line 21)
-
-
-
 // main 
     let crowd=new Array(20);  // 20 people
     for(let i=0;i<20;i++){
-        crowd[i]=new people();
-    }
-    let Map=new map();  // one map
-    while( done(Map)==0 ){ // run until there is only one people left
-    	Map.go();
-	}
+        crowd[i]=new People();
+    } 
+ //   let Map=new map();  // one map
+ //   while( done(Map)==0 ){ // run until there is only one people left
+    	//Map.go();
+//	}
 	let ans=0;  // find the winner
-	for(let i=0;i<10;i++)
+/*	for(let i=0;i<10;i++)
         for(let j=0;j<10;j++)
 		    if(Map.m[i][j]!=0)
 			    ans=Map.m[i][j];
@@ -32,9 +27,11 @@
 
 // cout 
 	document.write(`  
-	The winner is contestant  ${ans+1}
-	Win  games ${crowd[ans].win}
-	The total turn:${Map.turn}`);
+//	The winner is contestant  ${ans+1}
+//	Win  games ${crowd[ans].win}
+//	The total turn:${Map.turn}
+
+123`);
 
 
 // ** class
@@ -97,8 +94,8 @@
 					this.m[i][j]-=100;
     }
 }
-class people{
-	contructor(){
+class People(){
+	constructor(){
 		this.win=0;
 	}
 }

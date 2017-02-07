@@ -1,0 +1,170 @@
+<html>
+<head>  <title>-2</title>
+
+<style>
+button {
+	color:white;
+	background-color:blue;
+}
+*{
+	font-size:large;
+}
+</style>
+
+</head>
+<body>
+
+<button onClick="main()"> Click </button>
+
+<script>
+function main(){
+	let map=new Map;
+	map.initialize();
+	while( map.done()!=1 )
+		map.run();
+	document.write(map.showResult()); 
+}
+//***class
+
+class Map{
+	constructor(){
+		// "square" : 10x10 to record where the people stand
+		this.square=new Array(10);
+		for(let i=0;i<10;i++){
+			this.square[i]=new Array(10);
+		}
+		for(let i=0;i<10;i++)
+			for(let j=0;j<10;j++)
+				this.square[i][j]=-1;
+		
+		// crowd : there are twenty people on the map
+		this.crowd=[];
+	}
+	
+	run(){   // one move from every on the map
+		let move={
+			"CUL" : [[0,1],[1,1],[1,0]],
+			"CUR" : [[0,1],[-1,1],[-1,0]],
+			"CDL" : [[0,-1],[1,-1],[1,-1]],
+			"CDR" : [[0,-1],[-1,-1],[-1,0]],
+			"CU" : [[0,1],[-1,0],[-1,1],[1,1],[1,0]],
+			"CD" : [[0,-1],[-1,0],[-1,-1],[1,-1],[1,0]],
+			"CL" : [[1,0],[1,1],[0,-1],[1,-1],[0,1]],
+			"CR" : [[-1,0],[-1,-1],[-1,1],[0,1],[0,-1]],
+			"C" : [[1,0],[1,1],[1,-1],[-1,0],[-1,1],[-1,-1],[0,1],[0,-1]],
+		};
+		for(let y=0;y<10;y++){
+			for(let x=0;x<10;x++){					
+                let content="C";
+			    if(this.square[y][x]!=-1 && this.square[y][x]<100){  //if this person isn't moved, decided "content"
+				    if(y==0)	content+="U";
+				    else if (y==9) content+="D";
+				    if(x==0)	content+="L";
+				    else if (x==9) content+="R";
+			    }else { continue; }
+			    let t=randN(move[content].length);
+			    let ty=y+move[content][t][1];
+			    let tx=x+move[content][t][0];
+			    if(this.square[ty][tx]==-1){   //if this person move to a vacant point, then just move into it
+			    	this.crowd[ this.square[y][x] ].move+=1;
+				    this.square[ty][tx]=this.square[y][x] +100;  //use +100 to distinguish moved from not moved
+				    this.square[y][x]=-1;
+			    }else{  //else, he have to play a game with another person, and the winner can stay
+			    	let player1=this.square[ty][tx]>=100 ? this.square[ty][tx]-100 : this.square[ty][tx]
+				    this.square[ty][tx]=
+				    this.crowd[ player1 ].game(this.crowd[ this.square[y][x] ]) ?  this.square[ty][tx] : this.square[y][x]+100;
+				    this.square[y][x]=-1;
+			    }
+		    }
+	    }
+		for(let i=0;i<10;i++)     // -100
+			for(let j=0;j<10;j++)
+				if(this.square[i][j]>=100)
+					this.square[i][j]-=100;
+
+	}
+	showResult(){
+		let result="",
+			winner=0;
+		for(let i=0;i<10;i++)
+			for(let j=0;j<10;j++)
+				if(this.square[i][j]!=-1){
+					winner=this.square[i][j];
+				}
+		result+=`Player ${winner+1} is the winner<br>
+				 win ${this.crowd[winner].win } times<br>
+				 run ${this.crowd[winner].move} times`;
+		return result;
+	}
+	done(){  // check if there are only one person in the map
+		let check=0;
+		for(let i=0;i<10;i++)
+			for(let j=0;j<10;j++)
+				if(this.square[i][j]!=-1)
+					check++;
+		if(check==1)
+			return 1;
+		else
+			return 0;
+	}
+	
+	initialize(){ // initiallize crowd[]
+		for(let i=0;i<20;i++){
+			let x=randN(10),
+				y=randN(10);
+			if(this.square[y][x]==-1){
+				this.square[y][x]=this.crowd.length;
+				this.crowd.push( new People(y,x) );
+			}else{
+				i--;
+			}
+		}
+	}
+}//end of Map
+
+class People{
+	constructor(y,x){
+		this.x=x;
+		this.y=y;
+		this.win=0;
+		this.move=0;
+	}
+	game(B){ //return 1 if the caller win
+		let content="";
+		content+=this.mora()+B.mora();
+		let result={
+			"scst" : 0,
+			"scpa" : 1,
+			"scsc" : 2,
+			"past" : 0,
+			"papa" : 2,
+			"pasc" : 1,
+			"stst" : 2,
+			"stpa" : 0,
+			"stsc" : 1
+		};
+		if(result[content]==0){
+			B.win++;
+			return 0;
+		}
+		else if(result[content]==1){
+			this.win++;
+			return 1;
+		}
+		else 
+			return this.game(B);
+	}
+	
+	mora(){
+		return  ["st","pa","sc"][randN(3)];
+	}
+	
+}
+
+function randN( N ){
+	return Math.floor(Math.random()*N);
+}
+</script>
+
+</body>
+</html>
