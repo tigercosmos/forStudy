@@ -21,12 +21,13 @@
 
 ## 6. D3.js 統計圖
 將第4題生存遊戲，遊戲中所有玩家碰到對手的次數、平手的次數、贏過的人數都紀錄下來，然後統計畫成長條圖。
-長條圖參考 lineChartSample.html 
-#### 指定閱讀
-嵌入js：http://javascript.info/tutorial/adding-script-html
+長條圖參考 `lineChartSample.html` 
+### 指定閱讀
+嵌入js：
+- http://javascript.info/tutorial/adding-script-html
 
 D3.js 原理：
-http://www.oxxostudio.tw/articles/201410/svg-d3-js.html
-http://www.oxxostudio.tw/articles/201410/svg-d3-info.html
-http://www.oxxostudio.tw/articles/201411/svg-d3-01-data.html
-http://www.oxxostudio.tw/articles/201509/svg-d3-19-bar-chart.html
+- http://www.oxxostudio.tw/articles/201410/svg-d3-js.html
+- http://www.oxxostudio.tw/articles/201410/svg-d3-info.html
+- http://www.oxxostudio.tw/articles/201411/svg-d3-01-data.html
+- http://www.oxxostudio.tw/articles/201509/svg-d3-19-bar-chart.html
