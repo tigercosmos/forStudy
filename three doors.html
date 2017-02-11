@@ -1,0 +1,98 @@
+<html>
+<head>
+<title> three doors </title>
+
+<style>
+button {
+	background-color : #008CBA;
+	color : white;
+}
+div{
+	font-size : large;
+}
+
+</style>
+
+</head>
+
+<body>
+<button onClick="main()">Click</button>
+<div id="result"></div>
+
+<script>
+function main(){
+	let change=new Game(1),
+		notChange=new Game(0);
+	for(let i=0;i<1000;i++){
+		change.aRound();
+		notChange.aRound();
+	}
+	document.getElementById("result").innerHTML+=`
+		${change.showResult()} <br>
+		${notChange.showResult()} `
+}
+
+function randN( N ){
+	return Math.floor(Math.random()*N);
+}
+
+class Game{
+	constructor(ifChange){
+		this.win=0;
+		this.change=ifChange;
+		this.doors=[];
+	}
+	aRound(){      //not done 
+		this.initiallize();
+		let pick=randN(3);
+		this.doors[ pick ].firstPick();
+		let secondPick=this.open(pick);
+		if( this.change ){
+			let finalChoice=randN(3);
+			while(finalChoice==pick || finalChoice==secondPick)
+				finalChoice=randN(3);
+			if(	this.doors[finalChoice].inside)
+				this.win++;
+		}else{
+			if(	this.doors[pick].inside)
+				this.win++;
+		}
+	}
+	initiallize(){
+		let inside=[ [1,0,0], [0,1,0], [0,0,1] ];
+		let t=randN(3);
+		for(let i=0;i<3;i++)
+			this.doors.push( new Door( inside[t][i] ) ); 
+	}
+	showResult(){
+		let content="";
+		if(this.change)
+			content+=`Change the decision : `
+		else
+			content+=`Not change the decision : `
+		content+=`win ${this.win} times within 1000 games`;
+		return content;
+	}
+	open(already){  
+		let random=randN(3);
+		while(random==already || this.doors[random].inside==1 )
+			random=randN(3);
+		this.doors[random].chosen=1;
+		return random;
+	}
+}
+class Door{
+	constructor(inside){
+		this.inside=inside;
+		this.chosen=0;
+	}
+	firstPick(){
+		this.chosen=1;
+	}
+}
+
+</script>
+
+</body>
+
+</html>

@@ -42,7 +42,7 @@
         function showResult(result) {
             let avgWin = 0,
                 avgMove = 0;
-            result.forEach((res) => {
+            result.forEach((res) => {        //????
                 avgWin += res[0];
                 avgMove += res[1];
             });
@@ -94,7 +94,7 @@
                 // the Map side length
                 this.sideLength = 10;
                 // record {position: [particles]}, e.g {"(2,4)": [pt1, pt2]} 
-                this.field = {};
+                this.field = {};     													//?
                 // record all Particles on the Map
                 this.particles = [];
                 // Enable Neighbour Direction
