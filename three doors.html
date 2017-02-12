@@ -6,6 +6,9 @@
 button {
 	background-color : #008CBA;
 	color : white;
+	border : none;
+	padding: 10px 20px;
+	font-size : large;
 }
 div{
 	font-size : large;
@@ -37,32 +40,34 @@ function randN( N ){
 }
 
 class Game{
-	constructor(ifChange){
+	constructor(ifChange){   //if want to change the decision after open a door, then this.change=1
 		this.win=0;
 		this.change=ifChange;
 		this.doors=[];
+		for(let i=0;i<3;i++)
+			this.doors[i]=new Door(0);
 	}
-	aRound(){      //not done 
-		this.initiallize();
-		let pick=randN(3);
-		this.doors[ pick ].firstPick();
-		let secondPick=this.open(pick);
+	aRound(){
+		this.initiallize();  // distribute two goats and one car behind three doors
+		let pick=randN(3);   
+		this.doors[ pick ].firstPick();   // randomly pick one door at first
+		let secondPick=this.open(pick);   // randomly open a goat door
 		if( this.change ){
 			let finalChoice=randN(3);
-			while(finalChoice==pick || finalChoice==secondPick)
+			while(finalChoice==pick || finalChoice==secondPick)   //change the decision to the third door
 				finalChoice=randN(3);
-			if(	this.doors[finalChoice].inside)
+			if(	this.doors[finalChoice].inside)  // if there is a car behind the door, then game.win++
 				this.win++;
-		}else{
-			if(	this.doors[pick].inside)
+		}else{  // not change the decision
+			if(	this.doors[pick].inside)  
 				this.win++;
 		}
 	}
-	initiallize(){
+	initiallize(){ // distribute two goats and one car behind three doors
 		let inside=[ [1,0,0], [0,1,0], [0,0,1] ];
 		let t=randN(3);
 		for(let i=0;i<3;i++)
-			this.doors.push( new Door( inside[t][i] ) ); 
+			this.doors[i].inside=inside[t][i]; 
 	}
 	showResult(){
 		let content="";
@@ -73,7 +78,7 @@ class Game{
 		content+=`win ${this.win} times within 1000 games`;
 		return content;
 	}
-	open(already){  
+	open(already){ // randomly open a goat door
 		let random=randN(3);
 		while(random==already || this.doors[random].inside==1 )
 			random=randN(3);
