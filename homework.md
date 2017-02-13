@@ -31,3 +31,14 @@ D3.js 原理：
 - http://www.oxxostudio.tw/articles/201410/svg-d3-info.html
 - http://www.oxxostudio.tw/articles/201411/svg-d3-01-data.html
 - http://www.oxxostudio.tw/articles/201509/svg-d3-19-bar-chart.html
+
+## 7. Grids Visualization
+將第 4 題生存遊戲視覺化，讓不同顏色的格子代表不同玩家，藉此模擬遊戲進行。
+
+採用 D3.js 的話可以參考：
+- http://bl.ocks.org/tjdecke/5558084
+- http://bl.ocks.org/oyyd/859fafc8122977a3afd6
+- http://bl.ocks.org/NPashaP/f1e73faef87bee899b47
+
+或使用 Canvas 也可以。
+
