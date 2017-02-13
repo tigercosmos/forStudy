@@ -35,7 +35,9 @@ D3.js 原理：
 ## 7. Grids Visualization
 將第 4 題生存遊戲視覺化，讓不同顏色的格子代表不同玩家，藉此模擬遊戲進行。
 
-採用 D3.js 的話可以參考：
+採用 D3.js 的話可以參考:
+- https://tigercosmos.github.io/fun_game/game_of_life/
+- https://tigercosmos.github.io/fun_game/eatting_snake/
 - http://bl.ocks.org/tjdecke/5558084
 - http://bl.ocks.org/oyyd/859fafc8122977a3afd6
 - http://bl.ocks.org/NPashaP/f1e73faef87bee899b47
