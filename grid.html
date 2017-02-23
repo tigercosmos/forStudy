@@ -1,0 +1,66 @@
+<html>
+<head>
+<title> ~~~ </title>
+<script src="mora.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<style>
+button{
+      padding: 6px 12px;
+      font-size: 14px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin: 5px;
+}
+</style>
+
+</head>
+
+<body>
+<div id="grid"></div>
+<div id="result"></div>
+<script>
+let map=new Map;
+map.aRound();
+
+let grid=d3.select("#grid").append("svg:svg").attr({'width':350,'height':350})
+			.selectAll("rect").data( function(){return setGrid();} ).enter().append("rect")
+			.attr( {
+		    	'width':30,
+		    	'height': 30,
+		    	'stroke': "grey",
+		    	'stroke-width':.5,
+			    'x': function(d){ return d.x*30; },
+			    'y': function(d){ return d.y*30; },
+			    'fill': function(d){ 
+					return (d.state ? 'black' : 'white') ;} });
+
+let t=setInterval(	function(){
+						map.aRound();
+						display(); 
+						if(map.done==1) {
+							document.getElementById("result").innerHTML="the winner is player"+map.winner+"<br>"+"at y="+(map.crowd[map.winner-1].x+1) +" x="+(map.crowd[map.winner-1].y+1);
+							clearInterval(t);
+						}
+					},10);
+
+	function display(){
+		    grid.data( function(){return setGrid();})
+		    .attr( 'fill', function(d){ return d.state ? "black" : "white" ; } );  //所以selectAll到底什麼鬼= =
+	} 
+
+	function setGrid(){
+		let sq=[];
+		for(let i=0;i<10;i++)
+			for(let j=0;j<10;j++)
+				sq.push({"x": j, "y": i 
+						  ,"state": (map.square[i][j][0]>0) ? 1　: 0  });
+		return sq;
+	}  
+	
+</script>
+
+</body>
+
+</html>
