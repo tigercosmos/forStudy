@@ -10,6 +10,7 @@ class Map{
 			this.crowd.push(new People(i));
 		this.square=[];
 		this.done=0;
+		this.winner=0;
 	}
 	initiallize(){
 		this.square=[];
@@ -63,26 +64,32 @@ class Map{
 			let p2=k;
 			p2++;
 			if( this.crowd[ line[k] ].game(this.crowd[ line[p2] ]) ){
-				winner=k;
+				winner=line[k];
 				this.crowd[line[k]].win++;
 				this.crowd[line[p2]].lose=1;
 			}else{
-				winner=p2 ;
+				winner=line[p2] ;
 				this.crowd[line[p2]].win++;
 				this.crowd[line[k]].lose=1;
 			}
 			if(p2==line.length-1) 
 				break;
 		}
-		return winner;
+		let array=[];
+		array.push(winner);
+		return array;
 	}
 	ifDone(){
 		let t=0;
+		let winner=0;
 		for(let i=0;i<20;i++)
-			if(this.crowd[i].lose==0)
+			if(this.crowd[i].lose==0){
+				this.winner=i+1;
 				t++;
-		if(t==1)
+			}
+		if(t==1){
 			this.done=1;
+		}
 	}
 }
 class People{
