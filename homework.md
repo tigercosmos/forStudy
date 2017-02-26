@@ -44,3 +44,25 @@ D3.js 原理：
 
 或使用 Canvas 也可以。
 
+## 8. 網格系統
+Bootstrap 廣泛運用在網頁版型開發上。了解如何使用 Bootstrap。
+此外使用 Bootstrap 也可以輕鬆做到響應式網站，也就是會隨視窗大小調整區塊位置，大小螢幕都可以調整成適合閱讀的樣子。
+
+參考：
+- [W3C Bootstrap 教學](https://www.w3schools.com/bootstrap/default.asp ) : `try it yourself` 點開自己玩玩看
+- http://cythilya.blogspot.tw/2014/10/rwd.html
+
+## 9. HTTP Method
+先了解甚麼是 HTTP Method：參考 [這篇](http://data-sci.info/2015/10/24/%E5%B8%B8%E8%A6%8B%E7%9A%84http-method%E7%9A%84%E4%B8%8D%E5%90%8C%E6%80%A7%E8%B3%AA%E5%88%86%E6%9E%90%EF%BC%9Agetpost%E5%92%8C%E5%85%B6%E4%BB%964%E7%A8%AEmethod%E7%9A%84%E5%B7%AE%E5%88%A5/)
+和 [這篇](https://blog.toright.com/posts/1203/%E6%B7%BA%E8%AB%87-http-method%EF%BC%9A%E8%A1%A8%E5%96%AE%E4%B8%AD%E7%9A%84-get-%E8%88%87-post-%E6%9C%89%E4%BB%80%E9%BA%BC%E5%B7%AE%E5%88%A5%EF%BC%9F.html)
+
+此外還要認識一下 `JSON` 格式是啥。看一下 [這篇](https://blog.wu-boy.com/2011/04/%E4%BD%A0%E4%B8%8D%E5%8F%AF%E4%B8%8D%E7%9F%A5%E7%9A%84-json-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%B4%B9/)
+
+所謂的 API 就是前端透過 HTTP Method 去和後端做溝通。而溝通的資訊以 `JSON` 格式傳遞。
+
+至於前端如何採用 HTTP Method 呼叫 API？ 這篇提供你一個簡單的方式，參考 [這篇](https://www.w3schools.com/jquery/jquery_ajax_get_post.asp)。
+
+試著練習用這個 [氣象資訊 API](https://works.ioa.tw/weather/api/doc/index.html) 裡面的 API，
+做一個表格顯示所有鄉鎮市目前的累積雨量為多少。這邊你只需要用到 `GET` 這個 HTTP Method 就可以拿到你要的資料了。
+
+有時間可以呈現更多花樣 (例如有很多區塊，分別呈現不同資訊)，試著練習用 Bootstrap 做一些版面的配置。
