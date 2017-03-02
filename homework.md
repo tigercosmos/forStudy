@@ -66,3 +66,13 @@ Bootstrap 廣泛運用在網頁版型開發上。了解如何使用 Bootstrap。
 做一個表格顯示所有鄉鎮市目前的累積雨量為多少。這邊你只需要用到 `GET` 這個 HTTP Method 就可以拿到你要的資料了。
 
 有時間可以呈現更多花樣 (例如有很多區塊，分別呈現不同資訊)，試著練習用 Bootstrap 做一些版面的配置。
+
+## 10. jQuery 
+`jQuery` 是一種 JS 的框架，讓 JS 操作 HTML `DOM` 更加容易，在一些小網站中特別好用。
+比較古老的大型網站也還有採用。大網站比較新穎的方式是採用 `Angular 2` 、`React JS` 或是 `Vue.JS`
+
+參考：https://www.w3schools.com/jquery/
+
+看看他跟一般呼叫 `DOM` 有甚麼差異。
+
+順帶一提，`bootstrap` 有使用到 `jQuery` 所以引入函式庫的時候要先放 `jQuery` 再放 `bootstrap`
