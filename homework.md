@@ -62,6 +62,10 @@ Bootstrap 廣泛運用在網頁版型開發上。了解如何使用 Bootstrap。
 
 至於前端如何採用 HTTP Method 呼叫 API？ 這篇提供你一個簡單的方式，參考 [這篇](https://www.w3schools.com/jquery/jquery_ajax_get_post.asp)。
 
+接收傳回來的資料通常會是 `string`，要換回 `Json` 格式用 `let obj = JSON.parse(text);` 
+
+反之將 `Json` 變成 `string` 用 `let stringJSON = JSON.stringify(obj);`，通常用在把資料傳出去的時候。
+
 試著練習用這個 [氣象資訊 API](https://works.ioa.tw/weather/api/doc/index.html) 裡面的 API，
 做一個表格顯示所有鄉鎮市目前的累積雨量為多少。這邊你只需要用到 `GET` 這個 HTTP Method 就可以拿到你要的資料了。
 
