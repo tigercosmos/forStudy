@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"> 
+	<title>weater api</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<style>
+		.text{
+			text-align : center;
+			color :white;
+			font-size : 80px;
+		}
+		.tableText{
+			color : black ;
+			font-size : 30px;
+		}
+	
+	</style>
+</head>
+
+<body scrollong="auto">
+
+<div class="container">
+<!-- row1-->
+	<div class="row" style="height:100px; background-color:#203AD0;">
+		<div class="col-sm-12 text"> WEATER </div>
+	</div>
+<!-- row2-->	
+	<div class="row" style="height:50px;">
+		<div class="btn-group btn-group-justified" align=center>
+			<div class="btn-group"><button type="button"class="btn btn-primary" id="r">RAINFALL</button> </div>
+			<div class="btn-group"><button type="button"class="btn btn-success" id="f">FORCAST</button> </div>
+		</div>
+	</div>
+<!-- row3-->	
+	<div class="row">
+		<div class="col-sm-6 form-group">
+			<label for="s1" id="l1">County</label>
+			<select class="form-control" id="s1"></select>
+		</div>
+		<div class="col-sm-6 form-group">
+			<label for="s2" id="l2">Town</label>
+			<select class="form-control" id="s2"></select>
+		</div>	
+	</div>
+<!-- row4-->
+	<div class="row">
+		<div id="d3"></div>
+		<div class="col-sm-12" id="table"> 
+			<br><br>
+			<table class="table table-hover tableText">
+				<tr><td>Forcast</td><td id="forcast"></td></tr>
+				<tr><td>Temperature</td><td id="temperature"></td></tr>
+				<tr><td>Humidity</td><td id="humidity"></td></tr>
+			</table>
+			<br><br>
+			<lable id="lable" style="float:right;"></lable>
+		</div>
+	</div>
+</div>  <!-- end of container & body-->
+
+
+<script>
+let countyData=ajax("https://works.ioa.tw/weather/api/all.json");
+let county,town,state;
+initiallize();
+
+$("#r").click(function(){
+					state='r';
+					$("#s1,#l1").show();
+					$("#s2,#l2,#table").hide();
+					$("#d3").html("");
+			    });
+$("#f").click(function(){
+					state='f';
+					$("#forcast,#temperature,#humidity,#label").html("");
+					$("#s1,#s2,#l1,#l2").show();
+					$("#d3").html("");
+			    });
+$("#s1").change(function(){
+					$("#d3").html("");
+					county=this.selectedIndex;
+					s1Change();
+				});
+$("#s2").change(function(){
+					$("#d3").html("");
+					town=this.selectedIndex;
+					s2Change();
+				});
+				
+function initiallize(){
+	state='';
+	countyData.forEach((t)=>{
+		$("#s1").append("<option>"+t.name+"</option>");
+	}); 
+	$("#s1,#s2,#l1,#l2,#table").hide()
+}
+function s1Change(){
+	if(state=='r'){
+		rect(state);
+	}else if(state=='f'){
+		$("#s2").html("");
+		countyData[county].towns.forEach((t)=>{
+			$("#s2").append("<option>"+t.name+"</option>");
+		});
+	}
+}
+function s2Change(){
+	rect(state);
+}
+function rect(state){
+	if(state=='r'){
+		let pic=d3.select("#d3")
+			.append("svg")
+			.attr({
+				'width':400,
+				'height':600
+			});
+		let data=[];
+		countyData[county].towns.forEach((t)=>{
+				console.log(t);
+				let str="https://works.ioa.tw/weather/api/weathers/"+t.id+".json";
+				let forcast=ajax(str);
+				console.log(forcast.rainfall);
+				data.push(forcast.rainfall );
+			});
+		let t=1;
+		pic.selectAll("rect")
+			.data(data)
+			.enter()
+			.append("rect")
+			.attr({
+				'fill' : '#09c',
+				'x' : 60 ,
+				'y' : function(){ return (t++)*30 ; } ,
+				'height' : 25,
+				'width' : function(t){ return t; }
+			});
+		let d=0;
+		t=1;
+		pic.selectAll("text")
+			.data(countyData[county].towns)
+			.enter()
+			.append("text")
+			.text(function(t){ return  t.name+data[d++]; })
+			.attr({
+				'x' : 10,
+				'y' : function(){ return (t++)*30+20 ; },
+				'fill': 'SlateGray'
+			}); 
+	}else if(state=='f'){
+		$("#table").show();
+		console.log(countyData[county].towns[town].id);
+		let str="https://works.ioa.tw/weather/api/weathers/"+countyData[county].towns[town].id+".json";
+		let forcast=ajax(str);
+		console.log(forcast);
+		$("#forcast").html(forcast.desc);
+		$("#temperature").html(forcast.temperature);
+		$("#humidity").html(forcast.humidity);
+			/*	.append("<tr> <td>forcast</td>"+"<td>"+forcast.desc+"</td>")
+				.append("<tr><td>temperature</td>"+"<td>"+forcast.temperature+"</td>")
+				.append("<tr>   <td>humidity</td>"+"<td>"+forcast.humidity+"</td>")
+				.append("</table>") */
+		$("lable").html("at  "+forcast.at);
+	}
+}
+
+
+
+
+function ajax(URL){
+	let data;
+	$.ajax({
+		url : URL ,
+		type : "GET" ,
+		async : 0 ,
+		success : function(text){  console.log("success");	} ,
+		error : function(){  console.log("error");  }
+	}).done(function(text){
+		data=text;
+		});
+	return data;
+}
+
+	
+	
+
+</script>
+
+</body>
+
+
+</html>
